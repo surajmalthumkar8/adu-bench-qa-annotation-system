@@ -1,0 +1,28 @@
+# --- Raw screen recordings: backed up to Google Drive, NOT git ---
+# GitHub hard-rejects files >100MB; these are the source media, regenerable evidence
+# already lives in Own_tasks/**/reconstructed/*.md (kept in git).
+*.mp4
+Own_tasks/**/Recording*.mp4
+
+# --- Regenerable ingest artifacts (keyframes/pages PNGs, ~500MB) ---
+# Reproduce on any machine from the recording via: python video_pipeline/ingest.py <rec> --out Own_tasks/taskN
+Own_tasks/**/ingest/
+
+# --- All images: backed up to Google Drive, kept OUT of the public repo ---
+# (screenshots can carry more PII than text; reconstructed evidence is .md, no image embeds)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+
+# --- Python cache ---
+__pycache__/
+*.pyc
+*.pyo
+
+# --- OS / editor cruft ---
+.DS_Store
+Thumbs.db
+*.swp

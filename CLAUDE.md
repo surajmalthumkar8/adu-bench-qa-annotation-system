@@ -5,6 +5,39 @@ project: verifying AI-generated answers against document evidence, on the Henna 
 platforms. Source-of-truth guidelines live in the repo root and `onboarding/`; the
 engineered system lives in `system/`. Gold-standard signed-off examples: `Others_tasks/`.
 
+## ⚠ PROJECT ROUTING — three projects live in this repo
+
+**SxS Interactive tasks** (Interactive Preference Collection — write an authentic
+prompt, compare responses A vs B, pick the preferred one, continue the conversation
+naturally for 3–5 user turns) are a SEPARATE project with its own engineered system:
+`Interactive_contri_inst/system/`. Any pasted SxS task content (a pair of responses,
+a request to start/continue/end a task) ⇒ immediately run
+`Interactive_contri_inst/system/workflows/DO_TASK.md` — compulsory, all seven `sxs-*`
+agents per mode (`sxs-response-auditor` ×2 blind → `sxs-preference-judge` →
+`sxs-turn-writer` → `sxs-humanizer` → `sxs-reviewer-simulator` →
+`sxs-final-evaluator` → `sxs-lessons-scribe`), all pinned `model: opus`, gate chain
+validator CLEAN → APPROVE → humanized → CLEAN → SHIP. Validator:
+`python "Interactive_contri_inst/tools/validate_sxs_turn.py" <file>`. The project is
+STATEFUL: one task spans several pastes; state lives in
+`Interactive_contri_inst/sessions/`. Source-of-truth: `Interactive_contri_inst/
+Interactive Contributor Instructions.md` + `reference_tasks/` (distilled into
+`system/knowledge/`, incl. HUMAN_VOICE_CORPUS + GOLD_PATTERNS). Every user-side word
+must pass the human-voice gate — the deliverable is submitted AS a real user's message.
+
+**UI Merry/Cherry tasks** (compare Website A vs Website B from the same user request;
+deliverable = one of four options + an ~80–100-word reason) are a SEPARATE project with
+its own engineered system: `UI MerryCherry/system/`. Any pasted UI Merry/Cherry task ⇒
+immediately run `UI MerryCherry/system/workflows/DO_TASK.md` — compulsory, all six
+`merry-*` agents (`merry-site-auditor` ×2 blind → `merry-comparison-judge` →
+`merry-reviewer-simulator` → `merry-humanizer` → `merry-final-evaluator` →
+`merry-lessons-scribe`), all pinned `model: opus`, gate chain validator CLEAN →
+APPROVE → humanized → CLEAN → SHIP. Validator:
+`python "UI MerryCherry/tools/validate_merry_submission.py" <file>`. Guidelines
+source-of-truth: the 8 PDFs in `UI MerryCherry/` (distilled into
+`UI MerryCherry/system/knowledge/` + `rules/`). Gold examples:
+`UI MerryCherry/gold_examples/` → distill into `knowledge/REASON_STYLE.md`.
+Everything below this section is the ADU-Bench project.
+
 ## PRIMARY OPERATING MODE — Claude does the task
 
 Suraj pastes task content (text + screenshots) into chat. **Claude performs the task**
